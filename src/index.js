@@ -267,27 +267,4 @@ client.on(Events.InteractionCreate, async (interaction) => {
   }
 });
 
-// Lista de palabras prohibidas
-const palabrasProhibidas = ["estafa", "insulto", "spam"]; // 👈 acá ponés las que quieras
-
-client.on(Events.MessageCreate, async (message) => {
-  // Ignora mensajes del bot
-  if (message.author.bot) return;
-
-  // Revisa si el mensaje contiene alguna palabra prohibida
-  const contenido = message.content.toLowerCase();
-  if (palabrasProhibidas.some(palabra => contenido.includes(palabra))) {
-    try {
-      await message.delete(); // Borra el mensaje
-      await message.channel.send({
-        content: `${message.author}, tu mensaje fue eliminado porque contenía palabras no permitidas.`
-      });
-    } catch (err) {
-      console.error("No se pudo borrar el mensaje:", err);
-    }
-  }
-});
-
-
-
 client.login(TOKEN);
