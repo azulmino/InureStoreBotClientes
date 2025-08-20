@@ -27,7 +27,7 @@ const GUILD_ID = process.env.GUILD_ID;
 
 const commands = [
     new SlashCommandBuilder()
-        .setName("calcular")
+        .setName("calculargamepass")
         .setDescription("Calcula el precio de Robux incluyendo el 30% adicional para el Gamepass")
         .addIntegerOption(option =>
             option.setName("robux")
@@ -52,17 +52,17 @@ const commands = [
                 )
         ),
      new SlashCommandBuilder()
-        .setName("calculardinero")
+        .setName("calcular")
         .setDescription("Calcula cuántos Robux podés comprar con tu dinero")
         .addStringOption(option =>
           option.setName("moneda")
             .setDescription("Seleccioná la moneda")
             .setRequired(true)
             .addChoices(
-              { name: "🇦🇷 Pesos Argentinos (ARS)", value: "ARS" },
-              { name: "🇺🇸 Dólares (USD)", value: "USD" },
-              { name: "🇲🇽 Pesos Mexicanos (MXN)", value: "MXN" },
-              { name: "🇨🇴 Pesos Colombianos (COP)", value: "COP" },
+              { name: "Pesos Argentinos (ARS)", value: "ARS" },
+              { name: "Dólares (USD)", value: "USD" },
+              { name: "Pesos Mexicanos (MXN)", value: "MXN" },
+              { name: "Pesos Colombianos (COP)", value: "COP" },
             )
         )
         .addNumberOption(option =>
@@ -93,7 +93,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
     if (!interaction.isCommand()) return;
     
 
-    if (interaction.commandName === "calcular") {
+    if (interaction.commandName === "calculargamepass") {
         const robux = interaction.options.getInteger("robux");
         let total;
 
@@ -145,7 +145,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
     }
 
     // /calculardinero
-  if (interaction.commandName === "calculardinero") {
+  if (interaction.commandName === "calcular") {
     const moneda = interaction.options.getString("moneda");
     const dinero = interaction.options.getNumber("dinero");
 
