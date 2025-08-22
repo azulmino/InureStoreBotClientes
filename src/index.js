@@ -15,7 +15,7 @@ const {
 require("dotenv").config();
 
 const client = new Client({
-    intents: [GatewayIntentBits.Guilds,
+    intents: [/*GatewayIntentBits.Guilds,*/
             GatewayIntentBits.GuildMessages,
             GatewayIntentBits.MessageContent
     ]
@@ -23,7 +23,7 @@ const client = new Client({
 
 const TOKEN = process.env.TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
-const GUILD_ID = process.env.GUILD_ID;
+//const GUILD_ID = process.env.GUILD_ID;
 
 const commands = [
     new SlashCommandBuilder()
@@ -78,7 +78,7 @@ const rest = new REST({ version: "10" }).setToken(TOKEN);
 (async () => {
     try {
         console.log("Registrando comandos...");
-        await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: commands });
+        await rest.put(Routes.applicationCommands(CLIENT_ID), { body: commands });
         console.log("¡Comandos registrados con éxito!");
     } catch (error) {
         console.error(error);
