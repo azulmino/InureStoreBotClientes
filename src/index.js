@@ -192,6 +192,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
 });
 
+/*
 // Configuración
 const STAFF_CHANNEL_ID = "1407282751559958538"; // <-- Canal privado del staff
 const IDEA_CHANNEL_NAME = "idea"; 
@@ -265,6 +266,6 @@ client.on(Events.InteractionCreate, async (interaction) => {
       flags: 64
     });
   }
-});
+});*/
 
 client.login(TOKEN);
