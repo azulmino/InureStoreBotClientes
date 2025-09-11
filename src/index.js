@@ -228,7 +228,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
   if (interaction.commandName === "idea") {
     if (interaction.channel.name !== IDEA_CHANNEL_NAME) {
       return interaction.reply({
-        content: "⚠️ Este comando solo se puede usar en el canal #idea.",
+        content: "⚠️ Este comando solo se puede usar en el canal #-cmd.",
         flags: 64,
       });
     }
@@ -241,7 +241,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
       .setCustomId("ideaInput")
       .setLabel("Escribí tu idea para el vendedor")
       .setStyle(TextInputStyle.Paragraph)
-      .setPlaceholder("Ej: Podrían agregar más colores de productos...")
+      .setPlaceholder("Ej: Quiero items de este juego...")
       .setRequired(true);
 
     const row = new ActionRowBuilder().addComponents(ideaInput);
