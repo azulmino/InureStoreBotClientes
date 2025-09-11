@@ -192,10 +192,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
 });
 
-/*
+
 // Configuración
-const STAFF_CHANNEL_ID = "1407282751559958538"; // <-- Canal privado del staff
-const IDEA_CHANNEL_NAME = "idea"; 
+const STAFF_CHANNEL_ID = "1415804979398316186"; // <-- Canal privado del staff
+const IDEA_CHANNEL_NAME = "1378056887068528710"; 
 
 client.once(Events.ClientReady, async () => {
   console.log(`✅ Bot conectado como ${client.user.tag}`);
@@ -266,6 +266,6 @@ client.on(Events.InteractionCreate, async (interaction) => {
       flags: 64
     });
   }
-});*/
+});
 
 client.login(TOKEN);
