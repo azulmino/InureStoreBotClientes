@@ -226,7 +226,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
   if (interaction.commandName === "idea") {
-    if (interaction.channel.name !== IDEA_CHANNEL_NAME) {
+    if (!interaction.channel || interaction.channel.name !== IDEA_CHANNEL_NAME) {
       return interaction.reply({
         content: "⚠️ Este comando solo se puede usar en el canal #-cmd.",
         flags: 64,
