@@ -195,7 +195,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
 // Configuración
 const STAFF_CHANNEL_ID = "1415804979398316186"; // <-- Canal privado del staff
-const IDEA_CHANNEL_NAME = "1230276244881539092"; 
+const IDEA_CHANNEL_ID = "1230276244881539092"; 
 
 client.once(Events.ClientReady, async () => {
   console.log(`✅ Bot conectado como ${client.user.tag}`);
@@ -226,9 +226,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
   if (interaction.commandName === "idea") {
-    if (!interaction.channel || interaction.channel.name !== IDEA_CHANNEL_NAME) {
+    if (!interaction.channel || interaction.channel.id !== IDEA_CHANNEL_ID) {
       return interaction.reply({
-        content: "⚠️ Este comando solo se puede usar en el canal #-cmd.",
+        content: "⚠️ Este comando solo se puede usar en el canal #cmd.",
         flags: 64,
       });
     }
