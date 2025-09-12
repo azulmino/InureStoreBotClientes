@@ -15,7 +15,7 @@ const {
 require("dotenv").config();
 
 const client = new Client({
-    intents: [GatewayIntentBits.Guilds,
+    intents: [//GatewayIntentBits.Guilds,
             GatewayIntentBits.GuildMessages,
             GatewayIntentBits.MessageContent
     ]
@@ -192,7 +192,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
 });
 
-
+/*
 // Configuración
 const STAFF_CHANNEL_ID = "1415804979398316186"; // <-- Canal privado del staff
 const IDEA_CHANNEL_ID = "1230276244881539092"; 
@@ -266,6 +266,6 @@ client.on(Events.InteractionCreate, async (interaction) => {
       flags: 64
     });
   }
-});
+});*/
 
 client.login(TOKEN);
