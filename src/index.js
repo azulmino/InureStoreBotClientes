@@ -150,7 +150,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
     const dinero = interaction.options.getNumber("dinero");
 
     const precios = {
-      gamepass: { ARS: 11.70, USD: 0.0083, MXN: 0.155, COP: 35 },
+      gamepass: { ARS: 12.80, USD: 0.0083, MXN: 0.155, COP: 35 },
       grupo: { ARS: 10.50, USD: 0.0083, MXN: 0.155, COP: 35 }
     };
 
