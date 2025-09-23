@@ -15,7 +15,7 @@ const {
 require("dotenv").config();
 
 const client = new Client({
-    intents: [//GatewayIntentBits.Guilds,
+    intents: [GatewayIntentBits.Guilds,
             GatewayIntentBits.GuildMessages,
             GatewayIntentBits.MessageContent
     ]
@@ -192,15 +192,22 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
 });
 
-/*
-// Configuración
-const STAFF_CHANNEL_ID = "1415804979398316186"; // <-- Canal privado del staff
-const IDEA_CHANNEL_ID = "1230276244881539092"; 
+// Configuración por servidor (GUILD_ID → canales)
+const SERVER_CONFIG = {
+  "1193400722906165298": { // Servidor 1
+    staff: "1415804979398316186", // Canal staff
+    idea: "1230276244881539092"   // Canal ideas
+  },/*
+  "141111180000000000": { // Servidor 2
+    staff: "141111185555555555",
+    idea: "141111189999999999"
+  }*/
+};
 
 client.once(Events.ClientReady, async () => {
   console.log(`✅ Bot conectado como ${client.user.tag}`);
 
-  // 🔹 Registrar comando /idea automáticamente
+  // 🔹 Registrar comando /idea automáticamente (global)
   const commands = [
     new SlashCommandBuilder()
       .setName("idea")
@@ -224,48 +231,62 @@ client.once(Events.ClientReady, async () => {
 // Evento para /idea
 client.on(Events.InteractionCreate, async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
+  if (interaction.commandName !== "idea") return;
 
-  if (interaction.commandName === "idea") {
-    if (!interaction.channel || interaction.channel.id !== IDEA_CHANNEL_ID) {
-      return interaction.reply({
-        content: "⚠️ Este comando solo se puede usar en el canal #cmd.",
-        flags: 64,
-      });
-    }
-
-    const modal = new ModalBuilder()
-      .setCustomId("modalIdea")
-      .setTitle("💡 Comparte tu idea");
-
-    const ideaInput = new TextInputBuilder()
-      .setCustomId("ideaInput")
-      .setLabel("Escribí tu idea para el vendedor")
-      .setStyle(TextInputStyle.Paragraph)
-      .setPlaceholder("Ej: Quiero items de este juego...")
-      .setRequired(true);
-
-    const row = new ActionRowBuilder().addComponents(ideaInput);
-    modal.addComponents(row);
-
-    await interaction.showModal(modal);
+  const guildConfig = SERVER_CONFIG[interaction.guild.id];
+  if (!guildConfig) {
+    return interaction.reply({
+      content: "⚠️ Este servidor no tiene configurado el canal de ideas.",
+      ephemeral: true,
+    });
   }
+
+  if (!interaction.channel || interaction.channel.id !== guildConfig.idea) {
+    return interaction.reply({
+      content: "⚠️ Este comando solo se puede usar en el canal de ideas asignado.",
+      ephemeral: true,
+    });
+  }
+
+  const modal = new ModalBuilder()
+    .setCustomId("modalIdea")
+    .setTitle("💡 Comparte tu idea");
+
+  const ideaInput = new TextInputBuilder()
+    .setCustomId("ideaInput")
+    .setLabel("Escribí tu idea para el vendedor")
+    .setStyle(TextInputStyle.Paragraph)
+    .setPlaceholder("Ej: Quiero items de este juego...")
+    .setRequired(true);
+
+  const row = new ActionRowBuilder().addComponents(ideaInput);
+  modal.addComponents(row);
+
+  await interaction.showModal(modal);
 });
 
 // Evento cuando envían el modal
 client.on(Events.InteractionCreate, async (interaction) => {
   if (!interaction.isModalSubmit()) return;
+  if (interaction.customId !== "modalIdea") return;
 
-  if (interaction.customId === "modalIdea") {
-    const idea = interaction.fields.getTextInputValue("ideaInput");
-    const staffChannel = await client.channels.fetch(STAFF_CHANNEL_ID);
-
-    await staffChannel.send(`💡 Nueva idea de **${interaction.user.tag}**:\n> ${idea}`);
-
-    await interaction.reply({
-      content: "✅ ¡Gracias por tu idea! El staff la revisará pronto.",
-      flags: 64
+  const guildConfig = SERVER_CONFIG[interaction.guild.id];
+  if (!guildConfig) {
+    return interaction.reply({
+      content: "⚠️ Este servidor no tiene configurado el canal de staff.",
+      ephemeral: true,
     });
   }
-});*/
+
+  const idea = interaction.fields.getTextInputValue("ideaInput");
+  const staffChannel = await client.channels.fetch(guildConfig.staff);
+
+  await staffChannel.send(`💡 Nueva idea de **${interaction.user.tag}**:\n> ${idea}`);
+
+  await interaction.reply({
+    content: "✅ ¡Gracias por tu idea! El staff la revisará pronto.",
+    ephemeral: true
+  });
+});
 
 client.login(TOKEN);
