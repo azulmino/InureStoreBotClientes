@@ -1,5 +1,3 @@
-1410005240819875891
-
 ‼️  **¿Queres tener robux al instante?** Unite a todos nuestros grupos y luego de 14 días desde que te uniste, te vamos a poder enviar los robux que compres al instante y sin tener que esperar ⏰ **(Es necesario unirse a todos)**
 
 Random_Groups_40 <:Random_Groups_40:1419846227507282023>  Nuevo Grupo ✅  Agregado 22 de Septiembre 📆 
