@@ -1,3 +1,3 @@
-
-0000003100076101233667
-alias: inure.robux
+Datos de pago 💳
+Nequi: 3143935696
+Titular: Ale Hen
