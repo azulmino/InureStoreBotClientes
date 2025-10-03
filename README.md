@@ -1,3 +1,1 @@
-Datos de pago 💳
-Nequi: 3143935696
-Titular: Ale Hen
+⚠️ Este es el único alias que estamos usando, si envías a cualquier otro alias el dinero se perderá
