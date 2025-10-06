@@ -25,6 +25,8 @@ const TOKEN = process.env.TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
 //const GUILD_ID = process.env.GUILD_ID;
 
+const rest = new REST({ version: "10" }).setToken(TOKEN);
+
 const commands = [
   // Comando calculargamepass
   new SlashCommandBuilder()
@@ -83,7 +85,6 @@ const commands = [
 
 ].map(cmd => cmd.toJSON());
 
-const rest = new REST({ version: "10" }).setToken(TOKEN);
 // Registro de todos los comandos juntos
 (async () => {
   try {
