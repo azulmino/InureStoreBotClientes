@@ -83,6 +83,7 @@ const commands = [
 
 ].map(cmd => cmd.toJSON());
 
+const rest = new REST({ version: "10" }).setToken(TOKEN);
 // Registro de todos los comandos juntos
 (async () => {
   try {
