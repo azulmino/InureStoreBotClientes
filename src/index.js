@@ -26,63 +26,72 @@ const CLIENT_ID = process.env.CLIENT_ID;
 //const GUILD_ID = process.env.GUILD_ID;
 
 const commands = [
-    new SlashCommandBuilder()
-        .setName("calculargamepass")
-        .setDescription("Calcula el precio de Robux incluyendo el 30% adicional para el Gamepass")
-        .addIntegerOption(option =>
-            option.setName("robux")
-                .setDescription("Cantidad de Robux")
-                .setRequired(true)
-        ),
-    new SlashCommandBuilder()
-        .setName("precio")
-        .setDescription("Muestra los precios en todos los países")
-        .addIntegerOption(option =>
-            option.setName("robux")
-                .setDescription("Cantidad de Robux")
-                .setRequired(true)
+  // Comando calculargamepass
+  new SlashCommandBuilder()
+    .setName("calculargamepass")
+    .setDescription("Calcula el precio de Robux incluyendo el 30% adicional para el Gamepass")
+    .addIntegerOption(option =>
+      option.setName("robux")
+        .setDescription("Cantidad de Robux")
+        .setRequired(true)
+    ),
+
+  // Comando precio
+  new SlashCommandBuilder()
+    .setName("precio")
+    .setDescription("Muestra los precios en todos los países")
+    .addIntegerOption(option =>
+      option.setName("robux")
+        .setDescription("Cantidad de Robux")
+        .setRequired(true)
+    )
+    .addStringOption(option =>
+      option.setName("tipo")
+        .setDescription("Forma de compra")
+        .setRequired(true)
+        .addChoices(
+          { name: "Gamepass", value: "gamepass" },
+          { name: "Grupo", value: "grupo" }
         )
-        .addStringOption(option =>
-            option.setName("tipo")
-                .setDescription("Forma de compra")
-                .setRequired(true)
-                .addChoices(
-                    { name: "Gamepass", value: "gamepass" },
-                    { name: "Grupo", value: "grupo" }
-                )
-        ),
-     new SlashCommandBuilder()
-        .setName("calcular")
-        .setDescription("Calcula cuántos Robux podés comprar con tu dinero")
-        .addStringOption(option =>
-          option.setName("moneda")
-            .setDescription("Seleccioná la moneda")
-            .setRequired(true)
-            .addChoices(
-              { name: "Pesos Argentinos (ARS)", value: "ARS" },
-              { name: "Dólares (USD)", value: "USD" },
-              { name: "Pesos Mexicanos (MXN)", value: "MXN" },
-              { name: "Pesos Colombianos (COP)", value: "COP" },
-            )
+    ),
+
+  // Comando calcular
+  new SlashCommandBuilder()
+    .setName("calcular")
+    .setDescription("Calcula cuántos Robux podés comprar con tu dinero")
+    .addStringOption(option =>
+      option.setName("moneda")
+        .setDescription("Seleccioná la moneda")
+        .setRequired(true)
+        .addChoices(
+          { name: "Pesos Argentinos (ARS)", value: "ARS" },
+          { name: "Dólares (USD)", value: "USD" },
+          { name: "Pesos Mexicanos (MXN)", value: "MXN" },
+          { name: "Pesos Colombianos (COP)", value: "COP" }
         )
-        .addNumberOption(option =>
-          option.setName("dinero")
-            .setDescription("Cantidad de dinero que tenés")
-            .setRequired(true)
-        )
+    )
+    .addNumberOption(option =>
+      option.setName("dinero")
+        .setDescription("Cantidad de dinero que tenés")
+        .setRequired(true)
+    ),
+
+  // ✅ Comando idea
+  new SlashCommandBuilder()
+    .setName("idea")
+    .setDescription("Envía una idea para el vendedor")
 
 ].map(cmd => cmd.toJSON());
 
-const rest = new REST({ version: "10" }).setToken(TOKEN);
-
+// Registro de todos los comandos juntos
 (async () => {
-    try {
-        console.log("Registrando comandos...");
-        await rest.put(Routes.applicationCommands(CLIENT_ID), { body: commands });
-        console.log("¡Comandos registrados con éxito!");
-    } catch (error) {
-        console.error(error);
-    }
+  try {
+    console.log("Registrando comandos...");
+    await rest.put(Routes.applicationCommands(CLIENT_ID), { body: commands });
+    console.log("✅ ¡Comandos registrados con éxito!");
+  } catch (error) {
+    console.error("❌ Error al registrar comandos:", error);
+  }
 })();
 
 client.once(Events.ClientReady, bot => {
@@ -203,30 +212,6 @@ const SERVER_CONFIG = {
     idea: "141111189999999999"
   }*/
 };
-
-client.once(Events.ClientReady, async () => {
-  console.log(`✅ Bot conectado como ${client.user.tag}`);
-
-  // 🔹 Registrar comando /idea automáticamente (global)
-  const commands = [
-    new SlashCommandBuilder()
-      .setName("idea")
-      .setDescription("Envía una idea para el vendedor"),
-  ].map(cmd => cmd.toJSON());
-
-  const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
-
-  try {
-    console.log("⌛ Registrando comando /idea...");
-    await rest.put(
-      Routes.applicationCommands(client.user.id), 
-      { body: commands }
-    );
-    console.log("✅ Comando registrado con éxito.");
-  } catch (error) {
-    console.error("❌ Error al registrar comandos:", error);
-  }
-});
 
 // Evento para /idea
 client.on(Events.InteractionCreate, async (interaction) => {
