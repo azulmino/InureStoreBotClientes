@@ -1,34 +1,35 @@
 const {
-    Client,
-    GatewayIntentBits,
-    Events,
-    ModalBuilder,
-    TextInputBuilder,
-    TextInputStyle,
-    ActionRowBuilder,
-    REST,
-    Routes,
-    SlashCommandBuilder,
-    EmbedBuilder,
-    PermissionFlagsBits
+  Client,
+  GatewayIntentBits,
+  Events,
+  ModalBuilder,
+  TextInputBuilder,
+  TextInputStyle,
+  ActionRowBuilder,
+  REST,
+  Routes,
+  SlashCommandBuilder,
+  EmbedBuilder,
+  PermissionFlagsBits
 } = require("discord.js");
 require("dotenv").config();
 
 const client = new Client({
-    intents: [GatewayIntentBits.Guilds,
-            GatewayIntentBits.GuildMessages,
-            GatewayIntentBits.MessageContent
-    ]
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent
+  ]
 });
 
 const TOKEN = process.env.TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
-//const GUILD_ID = process.env.GUILD_ID;
 
+// ✅ Faltaba crear el objeto REST
 const rest = new REST({ version: "10" }).setToken(TOKEN);
 
+// 🔧 Definición de comandos
 const commands = [
-  // Comando calculargamepass
   new SlashCommandBuilder()
     .setName("calculargamepass")
     .setDescription("Calcula el precio de Robux incluyendo el 30% adicional para el Gamepass")
@@ -38,7 +39,6 @@ const commands = [
         .setRequired(true)
     ),
 
-  // Comando precio
   new SlashCommandBuilder()
     .setName("precio")
     .setDescription("Muestra los precios en todos los países")
@@ -57,7 +57,6 @@ const commands = [
         )
     ),
 
-  // Comando calcular
   new SlashCommandBuilder()
     .setName("calcular")
     .setDescription("Calcula cuántos Robux podés comprar con tu dinero")
@@ -78,14 +77,13 @@ const commands = [
         .setRequired(true)
     ),
 
-  // ✅ Comando idea
   new SlashCommandBuilder()
     .setName("idea")
     .setDescription("Envía una idea para el vendedor")
 
 ].map(cmd => cmd.toJSON());
 
-// Registro de todos los comandos juntos
+// 🚀 Registrar comandos globales
 (async () => {
   try {
     console.log("Registrando comandos...");
@@ -96,184 +94,158 @@ const commands = [
   }
 })();
 
+// 🟢 Cuando el bot se inicia
 client.once(Events.ClientReady, bot => {
-    console.log(`Bot cliente conectado como ${bot.user.username}`);
+  console.log(`Bot cliente conectado como ${bot.user.username}`);
 });
 
+// Configuración de canales por servidor
+const SERVER_CONFIG = {
+  "1193400722906165298": {
+    staff: "1415804979398316186",
+    idea: "1230276244881539092"
+  }
+};
+
+// 🎯 Un solo manejador de interacciones
 client.on(Events.InteractionCreate, async (interaction) => {
-    if (!interaction.isCommand()) return;
-    
+  if (interaction.isChatInputCommand()) {
 
+    // /calculargamepass
     if (interaction.commandName === "calculargamepass") {
-        const robux = interaction.options.getInteger("robux");
-        let total;
+      const robux = interaction.options.getInteger("robux");
+      let total;
 
-        switch (robux) {
-            case 700: total = 1000; break;
-            case 1400: total = 2000; break;
-            case 2100: total = 3000; break;
-            case 2800: total = 4000; break;
-            case 3500: total = 5000; break;
-            case 4200: total = 6000; break;
-            case 4900: total = 7000; break;
-            case 5600: total = 8000; break;
-            case 6300: total = 9000; break;
-            case 7000: total = 10000; break;
-            default: total = Math.round(robux / 0.7);
-        }
+      switch (robux) {
+        case 700: total = 1000; break;
+        case 1400: total = 2000; break;
+        case 2100: total = 3000; break;
+        case 2800: total = 4000; break;
+        case 3500: total = 5000; break;
+        case 4200: total = 6000; break;
+        case 4900: total = 7000; break;
+        case 5600: total = 8000; break;
+        case 6300: total = 9000; break;
+        case 7000: total = 10000; break;
+        default: total = Math.round(robux / 0.7);
+      }
 
-        await interaction.reply(`Para recibir **${robux} Robux**, necesitas hacer un pase de **${total} Robux**.`);
+      return interaction.reply(`Para recibir **${robux} Robux**, necesitas hacer un pase de **${total} Robux**.`);
     }
 
+    // /precio
     if (interaction.commandName === "precio") {
-        const robux = interaction.options.getInteger("robux");
-        const tipo = interaction.options.getString("tipo");
+      const robux = interaction.options.getInteger("robux");
+      const tipo = interaction.options.getString("tipo");
 
-        const precios = {
-            gamepass: { ARS: 12.80,USD: 0.0083, MXN: 0.155, COP: 35},
-            grupo: { ARS: 10.50, USD: 0.0083, MXN: 0.155, COP: 35 }
-        };
+      const precios = {
+        gamepass: { ARS: 12.80, USD: 0.0083, MXN: 0.155, COP: 35 },
+        grupo: { ARS: 10.50, USD: 0.0083, MXN: 0.155, COP: 35 }
+      };
 
-        const paisesNombres = {
-            ARS: "🇦🇷 Argentina",
-            USD: "🇺🇸 Estados Unidos",
-            MXN: "🇲🇽 México",
-            COP: "🇨🇴 Colombia"
-        };
+      const paisesNombres = {
+        ARS: "🇦🇷 Argentina",
+        USD: "🇺🇸 Estados Unidos",
+        MXN: "🇲🇽 México",
+        COP: "🇨🇴 Colombia"
+      };
 
-        let texto = `**Cantidad:** ${robux} Robux\n**Método:** ${tipo === "gamepass" ? "Gamepass" : "Grupo"}\n\n`;
+      let texto = `**Cantidad:** ${robux} Robux\n**Método:** ${tipo === "gamepass" ? "Gamepass" : "Grupo"}\n\n`;
 
-        for (const [pais, valor] of Object.entries(precios[tipo])) {
-            texto += `${paisesNombres[pais]} ${ (robux * valor).toFixed(2) } ${pais}\n`;
-        }
+      for (const [pais, valor] of Object.entries(precios[tipo])) {
+        texto += `${paisesNombres[pais]} ${ (robux * valor).toFixed(2) } ${pais}\n`;
+      }
 
-        const embed = new EmbedBuilder()
-            .setTitle("💰 Precio de Robux")
-            .setDescription(texto)
-            .setColor("#FFD700");
+      const embed = new EmbedBuilder()
+        .setTitle("💰 Precio de Robux")
+        .setDescription(texto)
+        .setColor("#FFD700");
 
-        await interaction.reply({ embeds: [embed] });
+      return interaction.reply({ embeds: [embed] });
     }
 
-    // /calculardinero
-  if (interaction.commandName === "calcular") {
-    const moneda = interaction.options.getString("moneda");
-    const dinero = interaction.options.getNumber("dinero");
+    // /calcular
+    if (interaction.commandName === "calcular") {
+      const moneda = interaction.options.getString("moneda");
+      const dinero = interaction.options.getNumber("dinero");
 
-    const precios = {
-      gamepass: { ARS: 12.80, USD: 0.0083, MXN: 0.155, COP: 35 },
-      grupo: { ARS: 10.50, USD: 0.0083, MXN: 0.155, COP: 35 }
-    };
+      const precios = {
+        gamepass: { ARS: 12.80, USD: 0.0083, MXN: 0.155, COP: 35 },
+        grupo: { ARS: 10.50, USD: 0.0083, MXN: 0.155, COP: 35 }
+      };
 
-    const paisesNombres = {
-      ARS: "🇦🇷 Pesos Argentinos",
-      USD: "🇺🇸 Dólares",
-      MXN: "🇲🇽 Pesos Mexicanos",
-      COP: "🇨🇴 Pesos Colombianos"
-    };
+      const paisesNombres = {
+        ARS: "🇦🇷 Pesos Argentinos",
+        USD: "🇺🇸 Dólares",
+        MXN: "🇲🇽 Pesos Mexicanos",
+        COP: "🇨🇴 Pesos Colombianos"
+      };
 
-    if (!precios.gamepass[moneda]) {
+      const robuxGamepass = Math.floor(dinero / precios.gamepass[moneda]);
+      const robuxGrupo = Math.floor(dinero / precios.grupo[moneda]);
+
+      const embed = new EmbedBuilder()
+        .setTitle("💰 Cálculo de Robux")
+        .setColor("#FFD700")
+        .setDescription(
+          `Con **${dinero} ${paisesNombres[moneda]}** podés comprar:\n\n` +
+          `🎮 **Gamepass:** ${robuxGamepass} Robux\n` +
+          `👥 **Grupo:** ${robuxGrupo} Robux`
+        )
+        .setFooter({ text: "Inure Store | Conversión estimada" })
+        .setTimestamp();
+
+      return interaction.reply({ embeds: [embed] });
+    }
+
+    // /idea
+    if (interaction.commandName === "idea") {
+      const guildConfig = SERVER_CONFIG[interaction.guild.id];
+      if (!guildConfig) {
+        return interaction.reply({
+          content: "⚠️ Este servidor no tiene configurado el canal de ideas.",
+          ephemeral: true,
+        });
+      }
+
+      const modal = new ModalBuilder()
+        .setCustomId("modalIdea")
+        .setTitle("💡 Comparte tu idea");
+
+      const ideaInput = new TextInputBuilder()
+        .setCustomId("ideaInput")
+        .setLabel("Escribí tu idea para el vendedor")
+        .setStyle(TextInputStyle.Paragraph)
+        .setPlaceholder("Ej: Quiero items de este juego...")
+        .setRequired(true);
+
+      const row = new ActionRowBuilder().addComponents(ideaInput);
+      modal.addComponents(row);
+
+      return interaction.showModal(modal);
+    }
+  }
+
+  // Cuando se envía el modal
+  if (interaction.isModalSubmit() && interaction.customId === "modalIdea") {
+    const guildConfig = SERVER_CONFIG[interaction.guild.id];
+    if (!guildConfig) {
       return interaction.reply({
-        embeds: [
-          new EmbedBuilder()
-            .setTitle("❌ Moneda no soportada")
-            .setDescription("Por ahora solo se aceptan ARS, USD, MXN y COP.")
-            .setColor("Red")
-        ],
-        flags: 64
+        content: "⚠️ Este servidor no tiene configurado el canal de staff.",
+        ephemeral: true,
       });
     }
 
-    const robuxGamepass = Math.floor(dinero / precios.gamepass[moneda]);
-    const robuxGrupo = Math.floor(dinero / precios.grupo[moneda]);
+    const idea = interaction.fields.getTextInputValue("ideaInput");
+    const staffChannel = await client.channels.fetch(guildConfig.staff);
 
-    const embed = new EmbedBuilder()
-      .setTitle("💰 Cálculo de Robux")
-      .setColor("#FFD700") // color dorado
-      .setDescription(
-        `Con **${dinero} ${paisesNombres[moneda]}** podés comprar:\n\n` +
-        `🎮 **Gamepass:** ${robuxGamepass} Robux\n` +
-        `👥 **Grupo:** ${robuxGrupo} Robux`
-      )
-      .setFooter({ text: "Inure Store | Conversión estimada" })
-      .setTimestamp();
+    await staffChannel.send(`💡 Nueva idea de **${interaction.user.tag}**:\n> ${idea}`);
 
-    return interaction.reply({ embeds: [embed] });
-  }
-
-});
-
-// Configuración por servidor (GUILD_ID → canales)
-const SERVER_CONFIG = {
-  "1193400722906165298": { // Servidor 1
-    staff: "1415804979398316186", // Canal staff
-    idea: "1230276244881539092"   // Canal ideas
-  },/*
-  "141111180000000000": { // Servidor 2
-    staff: "141111185555555555",
-    idea: "141111189999999999"
-  }*/
-};
-
-// Evento para /idea
-client.on(Events.InteractionCreate, async (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
-  if (interaction.commandName !== "idea") return;
-
-  const guildConfig = SERVER_CONFIG[interaction.guild.id];
-  if (!guildConfig) {
     return interaction.reply({
-      content: "⚠️ Este servidor no tiene configurado el canal de ideas.",
-      ephemeral: true,
+      content: "✅ ¡Gracias por tu idea! El staff la revisará pronto.",
+      ephemeral: true
     });
   }
-
-  if (!interaction.channel || interaction.channel.id !== guildConfig.idea) {
-    return interaction.reply({
-      content: "⚠️ Este comando solo se puede usar en el canal de ideas asignado.",
-      ephemeral: true,
-    });
-  }
-
-  const modal = new ModalBuilder()
-    .setCustomId("modalIdea")
-    .setTitle("💡 Comparte tu idea");
-
-  const ideaInput = new TextInputBuilder()
-    .setCustomId("ideaInput")
-    .setLabel("Escribí tu idea para el vendedor")
-    .setStyle(TextInputStyle.Paragraph)
-    .setPlaceholder("Ej: Quiero items de este juego...")
-    .setRequired(true);
-
-  const row = new ActionRowBuilder().addComponents(ideaInput);
-  modal.addComponents(row);
-
-  await interaction.showModal(modal);
-});
-
-// Evento cuando envían el modal
-client.on(Events.InteractionCreate, async (interaction) => {
-  if (!interaction.isModalSubmit()) return;
-  if (interaction.customId !== "modalIdea") return;
-
-  const guildConfig = SERVER_CONFIG[interaction.guild.id];
-  if (!guildConfig) {
-    return interaction.reply({
-      content: "⚠️ Este servidor no tiene configurado el canal de staff.",
-      ephemeral: true,
-    });
-  }
-
-  const idea = interaction.fields.getTextInputValue("ideaInput");
-  const staffChannel = await client.channels.fetch(guildConfig.staff);
-
-  await staffChannel.send(`💡 Nueva idea de **${interaction.user.tag}**:\n> ${idea}`);
-
-  await interaction.reply({
-    content: "✅ ¡Gracias por tu idea! El staff la revisará pronto.",
-    ephemeral: true
-  });
 });
 
 client.login(TOKEN);
