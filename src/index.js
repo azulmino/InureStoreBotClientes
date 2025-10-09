@@ -117,7 +117,13 @@ client.on(Events.InteractionCreate, async (interaction) => {
       let total;
 
       switch (robux) {
+        case 400: total = 572; break;
+        case 500: total = 715; break;
+        case 600: total = 858; break;
         case 700: total = 1000; break;
+        case 1100: total = 1572; break;
+        case 1200: total = 1715; break;
+        case 1300: total = 2858; break;
         case 1400: total = 2000; break;
         case 2100: total = 3000; break;
         case 2800: total = 4000; break;
