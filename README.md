@@ -1,6 +1,6 @@
 MTQzODczOTEwNjY5N                 DY5NzE2Mg.GV89bb.cSrNl_F1        0e33wCKIR41oFyIctp                ffN7NiPkzA7Q
 
-14387           391066946       971       62
+143 87391 06694 69 7 162
 
 [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
 Registrando comandos...
