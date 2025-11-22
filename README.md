@@ -48,3 +48,4 @@ application_id[NUMBER_TYPE_COERCE]: Value "undefined" is not snowflake.
   method: 'PUT',
   url: 'https://discord.com/api/v10/applications/undefined/commands'
 }
+console.log("CLIENT_ID:", process.env.CLIENT_ID);
