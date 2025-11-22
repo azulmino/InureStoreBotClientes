@@ -1,5 +1,5 @@
-TOKEN: MTQ0MT U4NjMx NTAx NDU 3 MDA4NQ. GE3l3N.QF- xYS5 V1 dGM6f  qeB5-cBv POu1jr0wm  sGEGPfM
-CLIEND_ID: 144 15 8 6 3 150 14 570 085  
+TOKEN= MTQ0MTU4OTg xMDcz MTk0 NjA 2Ng.G8  YPRO._lYOZ wgqdPq PUyY9pnav 83Ik PpTXN M7Yq 7TQKA
+CLIEND_ID= 1441 58 98 1  0 7319 460 66
 npm install discord.js dotenv @discordjs/rest @discordjs/builders
 
 [dotenv@17.2.3] injecting env (2) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
