@@ -1,2 +1,1 @@
-311 824 0817
-Hernando Monsalve
+https://discord.com/channels/1438714947914956823/1438714954340630700
